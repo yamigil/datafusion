@@ -1,0 +1,48 @@
+{
+  "name": "BigQuery_Multi_Table",
+  "appVersion": "e89351c6-fed6-11ef-9316-06932e3aa046",
+  "description": "Data Pipeline Application",
+  "change": {
+    "author": "cdap",
+    "creationTimeMillis": 1741738445036,
+    "latest": true
+  },
+  "configuration": "{\"resources\":{\"memoryMB\":2048.0,\"virtualCores\":\"4\"},\"driverResources\":{\"memoryMB\":2048.0,\"virtualCores\":\"4\"},\"connections\":[{\"from\":\"Multiple Database Tables\",\"to\":\"BigQuery Multi Table\"}],\"comments\":[],\"postActions\":[],\"properties\":{},\"processTimingEnabled\":true,\"stageLoggingEnabled\":false,\"stages\":[{\"name\":\"Multiple Database Tables\",\"plugin\":{\"name\":\"MultiTableDatabase\",\"type\":\"batchsource\",\"label\":\"Multiple Database Tables\",\"artifact\":{\"name\":\"multi-table-plugins\",\"version\":\"1.4.1\",\"scope\":\"USER\"},\"properties\":{\"referenceName\":\"default-uscentral1\",\"connectionString\":\"jdbc:mysql://10.56.206.3:3306/classicmodels\",\"jdbcPluginName\":\"cloudsql-mysql\",\"user\":\"root\",\"password\":\"vQ5jH8gQ!\",\"dataSelectionMode\":\"allow-list\",\"enableAutoCommit\":\"true\",\"fetchSize\":\"1000\",\"transactionIsolationLevel\":\"TRANSACTION_READ_UNCOMMITTED\",\"errorHandlingMode\":\"send-to-error-port\",\"whiteList\":\"customers,employees\",\"splitsPerTable\":\"2\"}},\"outputSchema\":[{\"name\":\"etlSchemaBody\",\"schema\":\"\"}],\"id\":\"Multiple-Database-Tables\"},{\"name\":\"BigQuery Multi Table\",\"plugin\":{\"name\":\"BigQueryMultiTable\",\"type\":\"batchsink\",\"label\":\"BigQuery Multi Table\",\"artifact\":{\"name\":\"google-cloud\",\"version\":\"0.23.1\",\"scope\":\"SYSTEM\"},\"properties\":{\"useConnection\":\"true\",\"connection\":\"${conn(BigQuery Default)}\",\"referenceName\":\"BigQuery_Sink_Multi_Table\",\"dataset\":\"AA\",\"truncateTable\":\"false\",\"bucket\":\"gs://df-6138052505678788692-lo2jeb76q4i67abkaizbbqaaaa\",\"allowFlexibleSchema\":\"off\",\"allowSchemaRelaxation\":\"false\",\"location\":\"US\"}},\"outputSchema\":[{\"name\":\"etlSchemaBody\",\"schema\":\"\"}],\"inputSchema\":[{\"name\":\"Multiple Database Tables\",\"schema\":\"\"}],\"id\":\"BigQuery-Multi-Table\"}],\"schedule\":\"0 1 */1 * *\",\"engine\":\"spark\",\"numOfRecordsPreview\":100.0,\"rangeRecordsPreview\":{\"min\":1.0,\"max\":\"5000\"},\"description\":\"Data Pipeline Application\",\"maxConcurrentRuns\":1.0}",
+  "datasets": [],
+  "programs": [
+    {
+      "type": "Spark",
+      "app": "BigQuery_Multi_Table",
+      "name": "phase-1",
+      "description": "Sources \u0027Multiple Database Tables\u0027 to sinks \u0027BigQuery Multi Table\u0027."
+    },
+    {
+      "type": "Workflow",
+      "app": "BigQuery_Multi_Table",
+      "name": "DataPipelineWorkflow",
+      "description": "Data Pipeline Workflow"
+    }
+  ],
+  "plugins": [
+    {
+      "id": "Multiple Database Tables:jdbc.driver",
+      "name": "cloudsql-mysql",
+      "type": "jdbc"
+    },
+    {
+      "id": "Multiple Database Tables",
+      "name": "MultiTableDatabase",
+      "type": "batchsource"
+    },
+    {
+      "id": "BigQuery Multi Table",
+      "name": "BigQueryMultiTable",
+      "type": "batchsink"
+    }
+  ],
+  "artifact": {
+    "name": "cdap-data-pipeline",
+    "version": "6.10.1",
+    "scope": "SYSTEM"
+  }
+}
