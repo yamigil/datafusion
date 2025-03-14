@@ -1,0 +1,58 @@
+{
+  "name": "GCS_Multi_Table_SQL_Dynamic_Avro",
+  "appVersion": "ecab536e-0050-11f0-b7ec-06932e3aa046",
+  "description": "Data Pipeline Application",
+  "change": {
+    "author": "cdap",
+    "creationTimeMillis": 1741900801658,
+    "latest": true
+  },
+  "configuration": "{\"resources\":{\"memoryMB\":2048.0,\"virtualCores\":\"4\"},\"driverResources\":{\"memoryMB\":2048.0,\"virtualCores\":\"4\"},\"connections\":[{\"from\":\"Multiple Database Tables\",\"to\":\"GCS Multi File\"},{\"from\":\"GCS Argument Setter\",\"to\":\"Multiple Database Tables\"}],\"comments\":[],\"postActions\":[],\"properties\":{},\"processTimingEnabled\":true,\"stageLoggingEnabled\":false,\"stages\":[{\"name\":\"Multiple Database Tables\",\"plugin\":{\"name\":\"MultiTableDatabase\",\"type\":\"batchsource\",\"label\":\"Multiple Database Tables\",\"artifact\":{\"name\":\"multi-table-plugins\",\"version\":\"1.4.1\",\"scope\":\"USER\"},\"properties\":{\"referenceName\":\"default-uscentral1\",\"connectionString\":\"jdbc:mysql://10.56.206.3:3306/classicmodels\",\"jdbcPluginName\":\"mysql\",\"user\":\"root\",\"password\":\"vQ5jH8gQ!\",\"dataSelectionMode\":\"sql-statements\",\"enableAutoCommit\":\"true\",\"fetchSize\":\"${multitable.fetchsize}\",\"transactionIsolationLevel\":\"TRANSACTION_SERIALIZABLE\",\"errorHandlingMode\":\"fail-pipeline\",\"sqlStatements\":\"${multitable.sqlstatements}\"}},\"outputSchema\":[{\"name\":\"etlSchemaBody\",\"schema\":\"\"}],\"id\":\"Multiple-Database-Tables\"},{\"name\":\"GCS Multi File\",\"plugin\":{\"name\":\"GCSMultiFiles\",\"type\":\"batchsink\",\"label\":\"GCS Multi File\",\"artifact\":{\"name\":\"google-cloud\",\"version\":\"0.23.1\",\"scope\":\"SYSTEM\"},\"properties\":{\"useConnection\":\"false\",\"project\":\"auto-detect\",\"serviceAccountType\":\"filePath\",\"serviceFilePath\":\"auto-detect\",\"path\":\"${gcsoutput.path}\",\"suffix\":\"yyyy-MM-dd\",\"format\":\"avro\",\"compressionCodec\":\"None\",\"splitField\":\"tablename\",\"allowFlexibleSchema\":\"true\",\"location\":\"us\",\"contentType\":\"application/octet-stream\"}},\"outputSchema\":[{\"name\":\"etlSchemaBody\",\"schema\":\"\"}],\"inputSchema\":[{\"name\":\"Multiple Database Tables\",\"schema\":\"\"}],\"id\":\"GCS-Multi-File\"},{\"name\":\"GCS Argument Setter\",\"plugin\":{\"name\":\"GCSArgumentSetter\",\"type\":\"action\",\"label\":\"GCS Argument Setter\",\"artifact\":{\"name\":\"google-cloud\",\"version\":\"0.23.1\",\"scope\":\"SYSTEM\"},\"properties\":{\"project\":\"auto-detect\",\"path\":\"${gcsargumentsetter.filepath}\",\"serviceAccountType\":\"filePath\",\"serviceFilePath\":\"auto-detect\"}},\"outputSchema\":[{\"name\":\"etlSchemaBody\",\"schema\":\"\"}],\"id\":\"GCS-Argument-Setter\"}],\"schedule\":\"0 1 */1 * *\",\"engine\":\"spark\",\"numOfRecordsPreview\":100.0,\"rangeRecordsPreview\":{\"min\":1.0,\"max\":\"5000\"},\"description\":\"Data Pipeline Application\",\"maxConcurrentRuns\":1.0}",
+  "datasets": [],
+  "programs": [
+    {
+      "type": "Spark",
+      "app": "GCS_Multi_Table_SQL_Dynamic_Avro",
+      "name": "phase-2",
+      "description": "Sources \u0027Multiple Database Tables\u0027 to sinks \u0027GCS Multi File\u0027."
+    },
+    {
+      "type": "Workflow",
+      "app": "GCS_Multi_Table_SQL_Dynamic_Avro",
+      "name": "DataPipelineWorkflow",
+      "description": "Data Pipeline Workflow"
+    }
+  ],
+  "plugins": [
+    {
+      "id": "GCS Argument Setter",
+      "name": "GCSArgumentSetter",
+      "type": "action"
+    },
+    {
+      "id": "GCS Multi File",
+      "name": "GCSMultiFiles",
+      "type": "batchsink"
+    },
+    {
+      "id": "Multiple Database Tables:jdbc.driver",
+      "name": "mysql",
+      "type": "jdbc"
+    },
+    {
+      "id": "Multiple Database Tables",
+      "name": "MultiTableDatabase",
+      "type": "batchsource"
+    },
+    {
+      "id": "GCS Multi File:format",
+      "name": "avro",
+      "type": "validatingOutputFormat"
+    }
+  ],
+  "artifact": {
+    "name": "cdap-data-pipeline",
+    "version": "6.10.1",
+    "scope": "SYSTEM"
+  }
+}
