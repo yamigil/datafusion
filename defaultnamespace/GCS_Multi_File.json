@@ -1,0 +1,61 @@
+{
+  "name": "GCS_Multi_File",
+  "appVersion": "8af19263-fec3-11ef-a51f-06932e3aa046",
+  "description": "Data Pipeline Application",
+  "change": {
+    "author": "cdap",
+    "creationTimeMillis": 1741730127516,
+    "latest": true
+  },
+  "sourceControlMeta": {
+    "fileHash": "2c185071294cc5f79bd91ef3e573f97915e1ad94",
+    "commitId": "0d9f991ba457f43b002dcc3943bc13d4ab488790",
+    "lastSyncedAt": {
+      "seconds": 1741734887,
+      "nanos": 960000000
+    }
+  },
+  "configuration": "{\"resources\":{\"memoryMB\":2048.0,\"virtualCores\":\"4\"},\"driverResources\":{\"memoryMB\":2048.0,\"virtualCores\":\"4\"},\"connections\":[{\"from\":\"Multiple Database Tables\",\"to\":\"GCS Multi File\"}],\"comments\":[],\"postActions\":[],\"properties\":{},\"processTimingEnabled\":true,\"stageLoggingEnabled\":false,\"stages\":[{\"name\":\"Multiple Database Tables\",\"plugin\":{\"name\":\"MultiTableDatabase\",\"type\":\"batchsource\",\"label\":\"Multiple Database Tables\",\"artifact\":{\"name\":\"multi-table-plugins\",\"version\":\"1.4.1\",\"scope\":\"USER\"},\"properties\":{\"referenceName\":\"default-uscentral1\",\"connectionString\":\"jdbc:mysql://10.56.206.3:3306/classicmodels\",\"jdbcPluginName\":\"cloudsql-mysql\",\"user\":\"root\",\"password\":\"vQ5jH8gQ!\",\"dataSelectionMode\":\"allow-list\",\"enableAutoCommit\":\"true\",\"fetchSize\":\"1000\",\"transactionIsolationLevel\":\"TRANSACTION_READ_UNCOMMITTED\",\"errorHandlingMode\":\"send-to-error-port\",\"whiteList\":\"customers,employees\",\"splitsPerTable\":\"2\"}},\"outputSchema\":[{\"name\":\"etlSchemaBody\",\"schema\":\"\"}],\"id\":\"Multiple-Database-Tables\"},{\"name\":\"GCS Multi File\",\"plugin\":{\"name\":\"GCSMultiFiles\",\"type\":\"batchsink\",\"label\":\"GCS Multi File\",\"artifact\":{\"name\":\"google-cloud\",\"version\":\"0.23.1\",\"scope\":\"SYSTEM\"},\"properties\":{\"useConnection\":\"true\",\"connection\":\"${conn(defaultdatafusion)}\",\"path\":\"gs://df-6138052505678788692-lo2jeb76q4i67abkaizbbqaaaa/\",\"suffix\":\"yyyy-MM-dd-HH-mm\",\"format\":\"json\",\"compressionCodec\":\"None\",\"splitField\":\"tablename\",\"allowFlexibleSchema\":\"off\",\"location\":\"us\",\"contentType\":\"application/octet-stream\",\"schema\":\"{\\\"type\\\":\\\"record\\\",\\\"name\\\":\\\"text\\\",\\\"fields\\\":[{\\\"name\\\":\\\"body\\\",\\\"type\\\":\\\"string\\\"}]}\"}},\"outputSchema\":[{\"name\":\"etlSchemaBody\",\"schema\":\"{\\\"type\\\":\\\"record\\\",\\\"name\\\":\\\"text\\\",\\\"fields\\\":[{\\\"name\\\":\\\"body\\\",\\\"type\\\":\\\"string\\\"}]}\"}],\"inputSchema\":[{\"name\":\"Multiple Database Tables\",\"schema\":\"\"}],\"id\":\"GCS-Multi-File\"}],\"schedule\":\"0 1 */1 * *\",\"engine\":\"spark\",\"numOfRecordsPreview\":100.0,\"rangeRecordsPreview\":{\"min\":1.0,\"max\":\"5000\"},\"maxConcurrentRuns\":1.0}",
+  "datasets": [],
+  "programs": [
+    {
+      "type": "Spark",
+      "app": "GCS_Multi_File",
+      "name": "phase-1",
+      "description": "Sources \u0027Multiple Database Tables\u0027 to sinks \u0027GCS Multi File\u0027."
+    },
+    {
+      "type": "Workflow",
+      "app": "GCS_Multi_File",
+      "name": "DataPipelineWorkflow",
+      "description": "Data Pipeline Workflow"
+    }
+  ],
+  "plugins": [
+    {
+      "id": "GCS Multi File",
+      "name": "GCSMultiFiles",
+      "type": "batchsink"
+    },
+    {
+      "id": "Multiple Database Tables:jdbc.driver",
+      "name": "cloudsql-mysql",
+      "type": "jdbc"
+    },
+    {
+      "id": "Multiple Database Tables",
+      "name": "MultiTableDatabase",
+      "type": "batchsource"
+    },
+    {
+      "id": "GCS Multi File:format",
+      "name": "json",
+      "type": "validatingOutputFormat"
+    }
+  ],
+  "artifact": {
+    "name": "cdap-data-pipeline",
+    "version": "6.10.1",
+    "scope": "SYSTEM"
+  }
+}
